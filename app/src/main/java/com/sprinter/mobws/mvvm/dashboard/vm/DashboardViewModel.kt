@@ -20,6 +20,10 @@ class DashboardViewModel(private val router: Router<DashboardFragmentDirections>
     }
 
     fun onRunClick() {
+        if (runButtonIsEnabled.value == false) {
+            return
+        }
+        
         router.routeTo(
             DashboardFragmentDirections
                 .actionDashboardFragmentToPointsFragment(pointsCount.value!!)
