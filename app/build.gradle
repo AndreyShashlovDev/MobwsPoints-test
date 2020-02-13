@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.sprinter.mobws"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            multiDexEnabled true
+            resValue "string", "app_name", appName
+        }
+
+        debug {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            multiDexEnabled true
+            resValue "string", "app_name", "${appName}.debug"
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        product {
+            dimension "version"
+            buildConfigField "String", "API_END_POINT", "\"https://demo.bankplus.ru/\""
+            buildConfigField "long", "CONNECTION_TIME_OUT", "10"
+        }
+    }
+    def Properties signingProps = new Properties()
+    def propFile = new File('android.signing.properties')
+    if (propFile.canRead()) {
+        signingProps.load(new FileInputStream(propFile))
+
+        if (signingProps != null && signingProps.containsKey('STORE_FILE') &&
+                signingProps.containsKey('STORE_PASSWORD') && signingProps.containsKey('KEY_ALIAS') &&
+                signingProps.containsKey('KEY_PASSWORD')) {
+
+            android.signingConfigs.release.storeFile = file(signingProps['STORE_FILE'])
+            android.signingConfigs.release.storePassword = signingProps['STORE_PASSWORD']
+            android.signingConfigs.release.keyAlias = signingProps['KEY_ALIAS']
+            android.signingConfigs.release.keyPassword = signingProps['KEY_PASSWORD']
+
+        } else {
+            println 'android.signing.properties found but some entries are missing'
+            android.buildTypes.release.signingConfig = null
+        }
+
+    } else {
+        println 'android.signing.properties not found'
+        android.buildTypes.release.signingConfig = null
+    }
+}
+
+def Properties signingProps = new Properties()
+def propFile = new File('android.signing.properties')
+if (propFile.canRead()) {
+    signingProps.load(new FileInputStream(propFile))
+
+    if (signingProps != null && signingProps.containsKey('STORE_FILE') &&
+            signingProps.containsKey('STORE_PASSWORD') && signingProps.containsKey('KEY_ALIAS') &&
+            signingProps.containsKey('KEY_PASSWORD')) {
+
+        android.signingConfigs.release.storeFile = file(signingProps['STORE_FILE'])
+        android.signingConfigs.release.storePassword = signingProps['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = signingProps['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = signingProps['KEY_PASSWORD']
+
+    } else {
+        println 'android.signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+
+} else {
+    println 'android.signing.properties not found'
+    android.buildTypes.release.signingConfig = null
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation libraries.corutinesAndroid
+    implementation libraries.corutinesCore
+
+    implementation libraries.supportDesign
+    implementation libraries.constraintLayout
+
+    kapt libraries.dataBinding
+
+    implementation libraries.core
+    implementation libraries.lifecycleViewmodelKtx
+
+    implementation libraries.okhttp
+    implementation libraries.okhttpUrlConnection
+    implementation libraries.okHttpLoggingInterceptor
+
+    implementation libraries.retrofit
+    implementation libraries.retrofitConverterGson
+
+    implementation libraries.navigationFragmentKtx
+    implementation libraries.navigationUi
+    implementation libraries.navigationUiKtx
+
+    implementation libraries.dagger
+    kapt libraries.daggerCompiler
+    implementation libraries.daggerAndroidSupport
+    kapt libraries.daggerAndroidProcessor
+
+    implementation libraries.lifecycleExt
+
+    implementation libraries.timber
+    implementation libraries.gson
+
+    testImplementation 'junit:junit:4.13'
+
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

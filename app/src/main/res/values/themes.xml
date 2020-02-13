@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="btnDefault">@style/AppTheme.Button</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <declare-styleable name="AppTheme">
+        <attr name="btnDefault" format="reference" />
+    </declare-styleable>
+
+</resources>

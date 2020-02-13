@@ -1,0 +1,86 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.sprinter.mobws.widget.BindingAdapters" />
+
+        <import type="com.sprinter.mobws.widget.BindingConverters" />
+
+        <import type="com.sprinter.mobws.mvvm.dashboard.vm.DashboardViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.sprinter.mobws.mvvm.dashboard.vm.DashboardViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_padding_8dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/AppTheme.TextView.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padding_16dp"
+            android:text="@string/dashboard_main_message"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/guideCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="some very very long text about something very interesting in our very beautiful application" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPointsCountLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_8dp"
+            app:errorEnabled="true"
+            app:errorMessage="@{@string/dashboard_input_error_point_count(DashboardViewModel.MAX_POINTS_COUNT, DashboardViewModel.MIN_POINTS_COUNT)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideCenter"
+            app:maxValue="@{DashboardViewModel.MAX_POINTS_COUNT}"
+            app:minValue="@{DashboardViewModel.MIN_POINTS_COUNT}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPointsCount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/dashboard_input_hint_point_count"
+                android:inputType="number"
+                android:text="@={BindingConverters.intToString(viewModel.pointsCount)}"
+                android:textAlignment="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:onEditorEnterActionCustom="@{() -> viewModel.onRunClick()}"
+                tools:text="102" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/dashboardBtnRun"
+            style="?btnDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padding_16dp"
+            android:enabled="@{viewModel.runButtonIsEnabled}"
+            android:onClick="@{() -> viewModel.onRunClick()}"
+            android:text="@string/dashboard_button_run"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Run" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

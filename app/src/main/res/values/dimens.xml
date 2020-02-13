@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_border_1dp">1dp</dimen>
+    <dimen name="button_corners_4dp">4dp</dimen>
+    <dimen name="button_width_240dp">240dp</dimen>
+    <dimen name="button_height_45dp">45dp</dimen>
+
+    <dimen name="input_height_50dp">50dp</dimen>
+
+    <dimen name="margin_padding_4dp">4dp</dimen>
+    <dimen name="margin_padding_8dp">8dp</dimen>
+    <dimen name="margin_padding_16dp">16dp</dimen>
+
+    <dimen name="text_size_14dp">14dp</dimen>
+    <dimen name="text_size_16dp">16dp</dimen>
+
+    <dimen name="circular_progress_size_100dp">100dp</dimen>
+</resources>

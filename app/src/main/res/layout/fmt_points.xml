@@ -1,0 +1,99 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.sprinter.mobws.widget.BindingConverters" />
+
+        <variable
+            name="viewModel"
+            type="com.sprinter.mobws.mvvm.points.vm.PointsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding_8dp">
+
+        <LinearLayout
+            android:id="@+id/pointsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_padding_4dp"
+            android:visibility="@{BindingConverters.boolToVisibility(viewModel.showInterface)}"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/points_title_x"
+                android:textAlignment="center" />
+
+            <TextView
+                style="@style/AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/points_title_y"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pointsList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            android:visibility="@{BindingConverters.boolToVisibility(viewModel.showInterface)}"
+            app:layout_constraintBottom_toTopOf="@id/guideCenter"
+            app:layout_constraintTop_toBottomOf="@id/pointsTitle"
+            tools:listitem="@layout/li_points" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.sprinter.mobws.widget.ChartView
+            android:id="@+id/pointsChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{BindingConverters.boolToVisibility(viewModel.showInterface)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideCenter" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="@dimen/circular_progress_size_100dp"
+            android:layout_height="@dimen/circular_progress_size_100dp"
+            android:visibility="@{BindingConverters.boolToVisibility(viewModel.isLoading)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dashboardBtnRun"
+            style="?btnDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onRetryClick()}"
+            android:text="@string/points_button_retry"
+            android:visibility="@{BindingConverters.boolToVisibility(viewModel.hasError)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Retry" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

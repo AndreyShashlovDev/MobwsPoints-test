@@ -1,0 +1,13 @@
+<resources>
+
+    <!--  Dashboar  -->
+    <string name="dashboard_main_message">Please enter count of point</string>
+    <string name="dashboard_input_hint_point_count">Point count</string>
+    <string name="dashboard_input_error_point_count">Max value is %d. Min value is %d</string>
+    <string name="dashboard_button_run">Run</string>
+
+    <!--  Points  -->
+    <string name="points_button_retry">Retry</string>
+    <string name="points_title_x">X</string>
+    <string name="points_title_y">Y</string>
+</resources>
