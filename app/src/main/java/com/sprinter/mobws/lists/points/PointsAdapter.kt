@@ -31,7 +31,7 @@ class PointsAdapter : AbstractRecyclerAdapter<Point, PointHolder>(
                 override fun areItemsTheSame(
                     oldItem: Point,
                     newItem: Point
-                ): Boolean = oldItem == newItem
+                ): Boolean = oldItem === newItem
 
                 override fun areContentsTheSame(
                     oldItem: Point,
