@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.sprinter.mobws.mvvm.points.ui.PointsFragmentArgs
 import com.sprinter.mobws.repositories.models.Point
 import com.sprinter.mobws.repositories.points.PointsRepository
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PointsViewModel(private val repository: PointsRepository) : ViewModel() {
 
@@ -34,21 +36,19 @@ class PointsViewModel(private val repository: PointsRepository) : ViewModel() {
 
     private fun syncPoints(points: Int) {
         viewModelScope.launch {
-            isLoading.postValue(true)
-            hasError.postValue(false)
-            showInterface.postValue(false)
+            withContext(IO) {
+                isLoading.postValue(true)
+                hasError.postValue(false)
+                showInterface.postValue(false)
 
-            val result = repository.getPoints(points)
+                val result = repository.getPoints(points)
 
-            originalList.postValue(result.data)
-            hasError.postValue(result.error !== null)
+                originalList.postValue(result.data)
+                hasError.postValue(result.error !== null)
 
-            isLoading.postValue(false)
-            showInterface.postValue(result.error == null)
+                isLoading.postValue(false)
+                showInterface.postValue(result.error == null)
+            }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 }

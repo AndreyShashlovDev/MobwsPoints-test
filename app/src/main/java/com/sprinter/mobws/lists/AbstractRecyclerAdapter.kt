@@ -16,7 +16,7 @@ abstract class AbstractRecyclerAdapter<D, T : AbstractHolder<D>>(
     private var pagedInteraction: PagedInteraction? = null
 ) : RecyclerView.Adapter<T>() {
 
-    private var mDiffer: Differ<D> =
+    private var differ: Differ<D> =
         Differ(this, diffCallback, emptyList(), emptyList())
 
     private var loadingState: PageableLoadedState = PageableLoadedState.Loaded
@@ -34,13 +34,13 @@ abstract class AbstractRecyclerAdapter<D, T : AbstractHolder<D>>(
     ): T
 
     open override fun onBindViewHolder(holder: T, position: Int) {
-        holder.setData(mDiffer.getItem(position))
+        holder.setData(differ.getItem(position))
     }
 
     override fun getItemViewType(position: Int): Int {
         if (pagedInteraction != null && loadingState == PageableLoadedState.Loaded &&
-            mDiffer.size > pagedInteraction!!.prefetchDistance &&
-            mDiffer.size - position < pagedInteraction!!.prefetchDistance
+            differ.size > pagedInteraction!!.prefetchDistance &&
+            differ.size - position < pagedInteraction!!.prefetchDistance
         ) {
             loadingState = if (pagedInteraction?.onFetchNext() == true)
                 PageableLoadedState.Loading else PageableLoadedState.Loaded
@@ -50,12 +50,12 @@ abstract class AbstractRecyclerAdapter<D, T : AbstractHolder<D>>(
     }
 
     override fun getItemCount(): Int {
-        return mDiffer.size
+        return differ.size
     }
 
     fun submitList(list: List<D>) {
-        mDiffer = Differ(this, diffCallback, list, mDiffer.newList)
-        mDiffer.calculateDiff()
+        differ = Differ(this, diffCallback, list, differ.newList)
+        differ.calculateDiff()
         loadingState = PageableLoadedState.Loaded
     }
 
